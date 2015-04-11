@@ -1,6 +1,8 @@
 Configuration Library
 ======================
 
+[![Build Status](https://travis-ci.org/ckressibucher/config.svg)](https://travis-ci.org/ckressibucher/config)
+
 This package provides a class to manage hierarchical data.
 A common usecase is configuration data.
 
