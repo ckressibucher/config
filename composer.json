@@ -1,0 +1,30 @@
+{
+    "name": "ckr/config",
+    "description": "Simple access to multi dimensional arrays, useful for configuration data",
+    "require": {
+        "php": ">=5.4.0",
+        "ckr/arraymerger": "dev-master#487beed"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Claudio Kressibucher",
+            "email": "ckressibucher@graphicworks.ch"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Ckr\\Config\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "spec\\Ckr\\Config": "spec/"
+        }
+    }
+}
