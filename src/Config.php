@@ -10,9 +10,9 @@ class Config
     /**
      * @var array
      */
-    protected $data;
+    private $data;
 
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
         $this->data = $config;
     }
@@ -30,8 +30,10 @@ class Config
     /**
      * Get a value specified by path
      *
+     * TODO allow escaping slash in path parts
+     *
      * @param string     $path Segmented by '/' (to fetch deeper configuration values)
-     * @param mixed|null $default This value is returned if the given path is not found
+     * @param mixed      $default This value is returned if the given path is not found
      *
      * @return mixed
      */
@@ -55,23 +57,30 @@ class Config
     }
 
     /**
-     * @param       $path
-     * @param mixed $default
+     * @param string $path
+     * @param bool   $tolerant If true, and `$path` doesn't exist, return an
+     *                         empty `Config` instead of throwing an Exception
      *
-     * @return mixed|static
      * @throws InvalidStructureException
+     * @throws \InvalidArgumentException
+     * @throws NotFoundException
+     * @return Config
      */
-    public function getChildConfig($path, $default = null)
+    public function getChildConfig($path, $tolerant = false)
     {
-        $configArray = $this->getConfigValue($path, $default);
-        if (is_array($configArray)) {
-            return new static($configArray);
-        } elseif ($default === $configArray) {
-            return $configArray;
+        $notFoundEx = new NotFoundException(sprintf('The path "%s" doesn\'t exist', $path));
+        $cfgValue = $this->getConfigValue($path, $notFoundEx);
+
+        if (is_array($cfgValue)) {
+            return new Config($cfgValue);
+        } elseif ($notFoundEx === $cfgValue) {
+            if ($tolerant) {
+                return new Config();
+            }
+            throw $notFoundEx;
         } else {
-            throw new InvalidStructureException(
-                'The given path ' . $path . ' is a scalar but is expected to be an array'
-            );
+            $msg = \sprintf('The given path "%s" contains a scalar but is expected to contain an array', $path);
+            throw new InvalidStructureException($msg);
         }
     }
 

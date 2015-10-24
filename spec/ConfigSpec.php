@@ -95,11 +95,17 @@ class ConfigSpec extends ObjectBehavior
             ->during('getChildConfig', array('a'));
     }
 
-    function it_should_return_default_value_if_config_is_not_found()
+    function its_getChildConfig_should_throw_notFound_if_childConfig_is_not_found()
     {
         $this->beConstructedWith(array());
-        $this->getChildConfig('not_existent')->shouldReturn(null);
-        $this->getChildConfig('not_existent', 'default')->shouldReturn('default');
+        $this->shouldThrow('Ckr\Config\NotFoundException')->during('getChildConfig', ['inexistent_key']);
+    }
+
+    function its_getChildConfig_should_return_empty_config_if_childConfig_is_not_found_and_tolerant_option_is_true()
+    {
+        $this->beConstructedWith(array());
+        $this->getChildConfig('inexistent_key', true)->shouldHaveType('Ckr\Config\Config');
+        $this->getChildConfig('inexistent_key', true)->shouldHaveConfigData([]);
     }
 
     function it_should_set_a_scalar_value()
@@ -130,8 +136,9 @@ class ConfigSpec extends ObjectBehavior
     {
         return array(
             'haveConfigData' => function ($subject, $expectedData) {
+                $cfg = $subject->getConfig();
                 return \is_array($expectedData)
-                    && \sort($expectedData) == \sort($subject->getConfig());
+                    && \sort($expectedData) == \sort($cfg);
             }
         );
     }
