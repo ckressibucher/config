@@ -6,7 +6,8 @@
         "ckr/arraymerger": "dev-master#487beed"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.1"
+        "phpspec/phpspec": "~2.3",
+        "phpunit/phpunit": "~4.8"
     },
     "license": "MIT",
     "authors": [

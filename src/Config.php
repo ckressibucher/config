@@ -2,8 +2,6 @@
 
 namespace Ckr\Config;
 
-use Ckr\Util\ArrayMerger;
-
 class Config
 {
 
@@ -114,18 +112,4 @@ class Config
             }
         }
     }
-
-    /**
-     * Merges given config data with current config data.
-     * The $config array given as argument takes precedence.
-     *
-     * @param array   $config
-     */
-    public function merge(array $config)
-    {
-        $merge = new ArrayMerger($this->data, $config);
-        $this->data = $merge->overwriteNumericKey(true)
-            ->mergeData();
-    }
-
 }
