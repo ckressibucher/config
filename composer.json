@@ -2,7 +2,7 @@
     "name": "ckr/config",
     "description": "Simple access to multi dimensional arrays, useful for configuration data",
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.6.0",
         "ckr/arraymerger": "dev-master#487beed"
     },
     "require-dev": {
