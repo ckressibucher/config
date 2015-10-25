@@ -23,7 +23,7 @@ class Helper
      */
     public function mergeArrays(...$arrays)
     {
-        return $this->arrayMerger->mergeRecursively($arrays);
+        return $this->arrayMerger->mergeRecursively(...$arrays);
     }
 
     /**
