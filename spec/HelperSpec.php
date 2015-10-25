@@ -42,7 +42,7 @@ class HelperSpec extends \PHPUnit_Framework_TestCase
 
         $this->merger->expects($this->once())
             ->method('mergeRecursively')
-            ->with([$arr1, $arr2])
+            ->with($arr1, $arr2)
             ->willReturn($result);
 
         $this->assertSame($result, $this->helper->mergeArrays($arr1, $arr2));
