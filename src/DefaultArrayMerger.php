@@ -9,11 +9,12 @@ class DefaultArrayMerger implements ArrayMergerInterface
 {
 
     /**
-     * @param array[] $arrays
+     * @param ...array A list of arrays
      * @return array
      */
-    public function mergeRecursively(...$arrays)
+    public function mergeRecursively()
     {
+        $arrays = func_get_args();
         $current = [];
         while(null !== ($next = \array_shift($arrays))) {
             // first, check if one array is empty; if not, do the merge operation

@@ -21,8 +21,9 @@ class Helper
      * @param array[] $arrays
      * @return array
      */
-    public function mergeArrays(...$arrays)
+    public function mergeArrays()
     {
+        $arrays = func_get_args();
         return $this->arrayMerger->mergeRecursively(...$arrays);
     }
 

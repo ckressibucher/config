@@ -10,8 +10,8 @@ interface ArrayMergerInterface {
      * Merge arrays recursively. The later arrays take precedence
      * over the former arrays
      *
-     * @param array[] $arrays
+     * @param ...array A list of arrays
      * @return array
      */
-    public function mergeRecursively(...$arrays);
+    public function mergeRecursively();
 } 
