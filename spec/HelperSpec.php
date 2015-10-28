@@ -4,6 +4,7 @@
 namespace spec\Ckr\Config;
 
 
+use Ckr\Config\Config;
 use Ckr\Config\Helper;
 
 /**
@@ -46,5 +47,31 @@ class HelperSpec extends \PHPUnit_Framework_TestCase
             ->willReturn($result);
 
         $this->assertSame($result, $this->helper->mergeArrays($arr1, $arr2));
+    }
+
+    /**
+     * @test
+     */
+    public function its_mergeConfigs_should_merge_config_objects()
+    {
+        $arr1 = ['a' => 'a', 'b' => 'b'];
+        $arr2 = ['data'];
+        $arr3 = ['a' => 'aa'];
+        $result = ['any result array'];
+
+        $this->merger->expects($this->once())
+            ->method('mergeRecursively')
+            ->with($arr1, $arr2, $arr3)
+            ->willReturn($result);
+
+        $mergedConfig = $this->helper->mergeConfig(
+            new Config($arr1),
+            new Config($arr2),
+            new Config($arr3)
+        );
+        $this->assertSame(
+            $result,
+            $mergedConfig->getConfig()
+        );
     }
 } 

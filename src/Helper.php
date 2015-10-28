@@ -18,26 +18,27 @@ class Helper
      * Merges the given arrays. The later arrays take
      * precedence over the former arrays.
      *
-     * @param array[] $arrays
+     * @param ...array A list of arrays
      * @return array
      */
     public function mergeArrays()
     {
         $arrays = func_get_args();
-        return $this->arrayMerger->mergeRecursively(...$arrays);
+        return call_user_func_array([$this->arrayMerger, 'mergeRecursively'], $arrays);
     }
 
     /**
      * Merge `Config` objects. The later objects take precedence over
      * the former objects.
      *
-     * @param Config[] $configs
+     * @param ...Config A list of Config objects
      * @return Config
      */
-    public function mergeConfig(...$configs)
+    public function mergeConfig()
     {
+        $configs = func_get_args();
         $arrays = array_map(function ($cfg) { return $cfg->getConfig(); }, $configs);
-        $merged = $this->arrayMerger->mergeRecursively($arrays);
+        $merged = call_user_func_array([$this->arrayMerger, 'mergeRecursively'], $arrays);
         return new Config($merged);
     }
 }
