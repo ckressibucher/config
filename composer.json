@@ -3,7 +3,7 @@
     "description": "Simple access to multi dimensional arrays, useful for configuration data",
     "require": {
         "php": ">=5.5.0",
-        "ckr/arraymerger": "dev-master#487beed"
+        "ckr/arraymerger": "dev-master"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.3",
