@@ -3,7 +3,7 @@
     "description": "Simple access to multi dimensional arrays, useful for configuration data",
     "require": {
         "php": ">=5.5.0",
-        "ckr/arraymerger": "dev-master"
+        "ckr/arraymerger": "^1.0.0@RC"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.3",
@@ -16,7 +16,7 @@
             "email": "ckressibucher@graphicworks.ch"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
