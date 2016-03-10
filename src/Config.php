@@ -30,9 +30,31 @@ class Config
      *
      * @return array
      */
-    public function getConfig()
+    public function getAll()
     {
         return $this->data;
+    }
+
+    /**
+     * @deprecated use `getAll` instead
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->getAll();
+    }
+
+    /**
+     * @deprecated use `get` instead
+     *
+     * @param $path
+     * @param null $default
+     * @return mixed
+     */
+    public function getConfigValue($path, $default = null)
+    {
+        return $this->get($path, $default);
     }
 
     /**
@@ -53,7 +75,7 @@ class Config
      *
      * @return mixed
      */
-    public function getConfigValue($path, $default = null)
+    public function get($path, $default = null)
     {
         $path = strval($path);
         if (empty($path)) {
@@ -112,6 +134,21 @@ class Config
     }
 
     /**
+     * @deprecated use `child` instead
+     *
+     * @param string $path
+     * @param bool $tolerant
+     * @return Config
+     * @throws InvalidStructureException
+     */
+    public function getChildConfig($path, $tolerant = false)
+    {
+        return $this->child($path, $tolerant);
+    }
+
+    /**
+     * Get a child `Config`
+     *
      * @param string $path
      * @param bool   $tolerant If true, and `$path` doesn't exist, return an
      *                         empty `Config` instead of throwing an Exception
@@ -121,7 +158,7 @@ class Config
      * @throws NotFoundException
      * @return Config
      */
-    public function getChildConfig($path, $tolerant = false)
+    public function child($path, $tolerant = false)
     {
         $notFoundEx = new NotFoundException(sprintf('The path "%s" doesn\'t exist', $path));
         $cfgValue = $this->getConfigValue($path, $notFoundEx);
@@ -140,13 +177,24 @@ class Config
     }
 
     /**
+     * @deprecated use `set` instead
+     *
+     * @param string $path
+     * @param mixed $value
+     */
+    public function setConfigValue($path, $value)
+    {
+        $this->set($path, $value);
+    }
+
+    /**
      * Sets a value to a given path.
      * The value may be a scalar, an array, or another Config instance
      *
      * @param string $path
      * @param mixed  $value
      */
-    public function setConfigValue($path, $value)
+    public function set($path, $value)
     {
         $pathParts = explode('/', $path);
         $arr = & $this->data;
