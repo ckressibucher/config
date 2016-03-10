@@ -178,27 +178,21 @@ class Config
     }
 
     /**
-     * @deprecated use `set` instead
+     * Returns an updated `Config` with the given value at the given path
      *
-     * @param string $path
-     * @param mixed $value
-     */
-    public function setConfigValue($path, $value)
-    {
-        $this->set($path, $value);
-    }
-
-    /**
-     * Sets a value to a given path.
      * The value may be a scalar, an array, or another Config instance
      *
-     * @param string $path
-     * @param mixed  $value
+     * @param string $path  The path of the new value
+     * @param mixed  $value The new value to set
+     * @return Config
      */
     public function set($path, $value)
     {
-        $pathParts = explode('/', $path);
-        $arr = & $this->data;
+        $pathParts = $this->explodePathParts($path);
+        $fullArr = $this->data;
+
+        // traverse the $path
+        $arr = & $fullArr; // pointer to the current array
         while ($key = array_shift($pathParts)) {
             if (!isset($arr[$key]) || count($pathParts) === 0) {
                 array_unshift($pathParts, $key);
@@ -217,5 +211,6 @@ class Config
                 $arr = & $arr[$key];
             }
         }
+        return new self($fullArr);
     }
 }

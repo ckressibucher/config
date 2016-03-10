@@ -130,15 +130,17 @@ To summarize:
 * `Config::child` expects the given path to point to an (associative) array. It wraps this
   array in a `Config` and returns that object.
 
-It is also possible to modify Config objects after initialization. This may be useful if
-you want to construct a complete configuration object from different parts of your code,
-e.g. to allow different modules to register their configuration or factories.
+A new value can be set using `Config::set`:
 
 ```php
-$c->set('logging/factory', 'AnotherFactoryClass');
+$newConfig = $c->set('logging/factory', 'AnotherFactoryClass');
 ```
 
-The above example would modify the `Config` object `$c` in place. I plan to change this
-behaviour in version 2 of this library to let `$c` unmodified, and instead return a
-new `Config` instance with the updated data.
+This method returns *a new instance* with a specific part of the config updated (or newly set).
+This may be useful if you want to construct a complete configuration object
+in multiple steps from different parts of your code,
+e.g. to allow different modules to register their configuration or factories.
+In the above example, `$newConfig` has a value of `'AnotherFactoryClass'` at the path
+*logging/factory*, where the `$c` instance is *not* modified and still has the old value.
+(Note that this behaviour is new in Version 2.0, former versions did update the data in place).
 

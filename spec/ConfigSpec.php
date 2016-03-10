@@ -137,25 +137,27 @@ class ConfigSpec extends ObjectBehavior
     function its_set_should_set_a_scalar_value()
     {
         $this->beConstructedWith(array());
-        $this->set('path', 'value');
-
-        $this->get('path')->shouldReturn('value');
+        $this->set('path', 'value')->shouldHaveAt('path', 'value');
     }
 
     function its_set_should_set_a_value_to_a_multipart_path()
     {
         $this->beConstructedWith(array());
-        $this->set('a/b/c', 'value');
-        $this->get('a/b/c')->shouldReturn('value');
+        $this->set('a/b/c', 'value')->shouldHaveAt('a/b/c', 'value');
     }
 
     function its_set_should_set_a_subconfig()
     {
         $config = new Config(array('sub' => 'value'));
         $this->beConstructedWith(array());
-        $this->set('outer', $config);
+        $this->set('outer', $config)->shouldHaveAt('outer/sub', 'value');
+    }
 
-        $this->get('outer/sub')->shouldReturn('value');
+    function its_set_should_leave_this_unmodified()
+    {
+        $this->beConstructedWith(['path' => 'old value']);
+        $this->set('path', 'value')->shouldHaveAt('path', 'value');
+        $this->get('path')->shouldReturn('old value');
     }
 
     public function getMatchers()
@@ -165,6 +167,10 @@ class ConfigSpec extends ObjectBehavior
                 $cfg = $subject->getAll();
                 return \is_array($expectedData)
                     && \sort($expectedData) == \sort($cfg);
+            },
+            'haveAt' => function($subject, $path, $expectedValue) {
+                /* @var $subject Config */
+                return $subject->get($path) === $expectedValue;
             }
         );
     }
