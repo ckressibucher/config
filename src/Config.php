@@ -51,7 +51,7 @@ class Config
         if (empty($path)) {
             throw new \InvalidArgumentException('given path is empty (after type cast to string)');
         }
-        $pathParts = \explode('/', $path);
+        $pathParts = $this->explodePathParts($path);
         $config = $this->getConfig();
         while (\count($pathParts) > 1) {
             $key = array_shift($pathParts);
@@ -62,6 +62,45 @@ class Config
         }
         $key = \current($pathParts);
         return isset($config[$key]) ? $config[$key] : $default;
+    }
+
+    /**
+     * Splits the given path in parts, separated by slashes (but allow escaping slashes with
+     * a backslash)
+     *
+     * @param string $path
+     * @return array
+     */
+    protected function explodePathParts($path)
+    {
+        $parts = [];
+        $searchOffset = 0;
+        $lastPos = 0;
+
+        $fnRemoveEscapeChars = function($str) {
+            return str_replace('\\/', '/', $str);
+        };
+
+        do {
+            $i = strpos($path, '/', $searchOffset);
+            if (false === $i) {
+                // not found
+                break;
+            }
+            if ($i > 0 && $path[$i-1] === '\\') {
+                // escaped
+                $searchOffset = $i + 1;
+                continue;
+            }
+            $p = substr($path, $lastPos, $i-$lastPos);
+            $parts[] = $fnRemoveEscapeChars($p);
+
+            $lastPos = $searchOffset = $i + 1;
+        } while ($searchOffset <= strlen($path));
+
+        // add last part
+        $parts[] = $fnRemoveEscapeChars(substr($path, $lastPos));
+        return $parts;
     }
 
     /**

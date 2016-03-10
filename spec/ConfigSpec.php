@@ -14,7 +14,7 @@ class ConfigSpec extends ObjectBehavior
         $this->shouldHaveType('Ckr\Config\Config');
     }
 
-    function it_should_return_the_given_config_array()
+    function its_getConfig_should_return_the_given_config_array()
     {
         $config = array(
             'a' => array('b')
@@ -23,27 +23,27 @@ class ConfigSpec extends ObjectBehavior
         $this->getConfig()->shouldReturn($config);
     }
 
-    function it_should_return_an_empty_array_if_constructed_without_arguments()
+    function its_getConfig_should_return_an_empty_array_if_constructed_without_arguments()
     {
         $config = array();
         $this->getConfig()->shouldReturn($config);
     }
 
-    function it_should_return_a_default_value_if_key_doesnt_exist()
+    function its_getConfigValue_should_return_a_default_value_if_key_doesnt_exist()
     {
         $this->getConfigValue('inexistent_key', null)->shouldReturn(null);
         $this->getConfigValue('inexistent_key', false)->shouldReturn(false);
         $this->getConfigValue('inexistent_key')->shouldReturn(null);
     }
 
-    function it_should_return_an_existent_value()
+    function its_getConfigValue_should_return_an_existent_value()
     {
         $config = array('key' => 'value');
         $this->beConstructedWith($config);
         $this->getConfigValue('key')->shouldReturn('value');
     }
 
-    function it_should_return_a_nested_value_when_path_contains_a_slash()
+    function its_getConfigValue_should_return_a_nested_value_when_path_contains_a_slash()
     {
         $config = array(
             'outer' => array('inner' => 'value')
@@ -52,14 +52,40 @@ class ConfigSpec extends ObjectBehavior
         $this->getConfigValue('outer/inner')->shouldReturn('value');
     }
 
-    function it_should_return_default_value_if_nested_value_doesnt_exist()
+    function its_getConfigValue_should_respect_escaped_slashes()
+    {
+        $config = array(
+            'some/key' => 'flat array',
+            '/begin' => 'begin',
+            'end/' => 'end',
+        );
+        $this->beConstructedWith($config);
+
+        $this->getConfigValue('some\/key')->shouldReturn('flat array');
+        $this->getConfigValue('\/begin')->shouldReturn('begin');
+        $this->getConfigValue('end\/')->shouldReturn('end');
+    }
+
+    function its_getConfigValue_should_handle_slashes_on_begin_and_end()
+    {
+        // edge cases on handling unescaped slashes
+        $config = array(
+            '' => array('key' => 'nested'),      // check path '/key'
+            'key' => array('' => 'also nested'), // check paht 'key/'
+        );
+        $this->beConstructedWith($config);
+        $this->getConfigValue('/key')->shouldReturn('nested');
+        $this->getConfigValue('key/')->shouldReturn('also nested');
+    }
+
+    function its_getConfigValue_should_return_default_value_if_nested_value_doesnt_exist()
     {
         $config = array('outer' => 'x');
         $this->beConstructedWith($config);
         $this->getConfigValue('outer/a/b/c', null)->shouldReturn(null);
     }
 
-    function it_should_return_deep_nested_paths()
+    function its_getConfigValue_should_return_deep_nested_paths()
     {
         $config = array(
             'a' => array(
@@ -72,14 +98,14 @@ class ConfigSpec extends ObjectBehavior
         $this->getConfigValue('a/b/c')->shouldReturn('deep');
     }
 
-    function it_should_throw_an_exception_if_path_is_empty_string()
+    function its_getConfigValue_should_throw_an_exception_if_path_is_empty_string()
     {
         $config = array();
         $this->beConstructedWith($config);
         $this->shouldThrow('\InvalidArgumentException')->during('getConfigValue', array(''));
     }
 
-    function it_should_return_a_config_object_for_child_data()
+    function its_getChildConfig_should_return_a_config_object_for_child_data()
     {
         $innerConfig = array('a' => 'x');
         $config = array('outer' => $innerConfig);
@@ -88,7 +114,7 @@ class ConfigSpec extends ObjectBehavior
         $this->getChildConfig('outer')->shouldHaveConfigData($innerConfig);
     }
 
-    function it_should_throw_an_exception_if_value_is_scalar()
+    function its_getChildConfig_should_throw_an_exception_if_value_is_scalar()
     {
         $this->beConstructedWith(array('a' => 'x'));
         $this->shouldThrow('\Ckr\Config\InvalidStructureException')
@@ -108,7 +134,7 @@ class ConfigSpec extends ObjectBehavior
         $this->getChildConfig('inexistent_key', true)->shouldHaveConfigData([]);
     }
 
-    function it_should_set_a_scalar_value()
+    function its_setConfigValue_should_set_a_scalar_value()
     {
         $this->beConstructedWith(array());
         $this->setConfigValue('path', 'value');
@@ -116,14 +142,14 @@ class ConfigSpec extends ObjectBehavior
         $this->getConfigValue('path')->shouldReturn('value');
     }
 
-    function it_should_set_a_value_to_a_multipart_path()
+    function its_setConfigValue_should_set_a_value_to_a_multipart_path()
     {
         $this->beConstructedWith(array());
         $this->setConfigValue('a/b/c', 'value');
         $this->getConfigValue('a/b/c')->shouldReturn('value');
     }
 
-    function it_should_set_a_subconfig()
+    function its_setConfigValue_should_set_a_subconfig()
     {
         $config = new Config(array('sub' => 'value'));
         $this->beConstructedWith(array());
