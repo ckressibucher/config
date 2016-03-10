@@ -10,13 +10,23 @@ class Config
      */
     private $data;
 
+    /**
+     * Wraps a -- potentially multidimensional -- array
+     * in a `Config` object
+     *
+     * @param array $config The actual config data
+     */
     public function __construct(array $config = [])
     {
         $this->data = $config;
     }
 
     /**
-     * Get complete configuration
+     * Get complete configuration data as array.
+     *
+     * If the object has not been modified, this is
+     * the same data that was initially given
+     * to the constructor.
      *
      * @return array
      */

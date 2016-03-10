@@ -6,6 +6,11 @@ namespace Ckr\Config;
 class Helper
 {
 
+    /**
+     * If null, a default merger is used
+     *
+     * @var ArrayMergerInterface|null
+     */
     protected $arrayMerger;
 
     /**
