@@ -14,7 +14,7 @@ and *provides easier access to its values*.
 Why?
 ----
 
-I was tired of using too many `isset` throgh all my code. The main
+I was tired of using too many `isset` throghout all my code. The main
 advantage of this library is, that you can request
 an arbitrary deeply nested value, and provide a default value which
 should be returned in case the requested value does not exist:
@@ -33,7 +33,7 @@ $theSpecific = isset($myConfig['root']['specific']['key']) ?
 $theGeneral = isset($myConfig['root']['key']) ?
      $myConfig['root']['key'] : false;
 
-// ... but with a `Config`
+// ... but with a `Config` it looks nicer:
 $config = new Ckr\Config\Config($myConfig);
 $theSpecific = $config->get('root/specific/key');
 $theGeneral = $config->get('root/key', false);
@@ -94,25 +94,27 @@ $mode = $c->get('mode', 'dev');
 In the example above, "dev" is the default mode. It is returned, if the key 'mode'
 does not exist in the config data.
 
-You can ask for a value nested in deeper dimensions:
+You can ask for a value which is nested in a child array by providing a *path* of keys, separated
+by a Slash `/`:
 
 ```php
 $loggingFactoryClass = $c->get('logging/factory');
 ```
 
-If any of the used path parts don't exist, the default value (`null` if not specified)
-is returned.
+If any of the used path parts (keys) don't exist, the default value (`null` if
+not explicitly specified) is returned.
 
-Say you want to use all of the logging data, e.g. to instantiate your logging instance.
+Say you want to use all of the *logging* data, e.g. to instantiate your logging instance.
 For this, you can get a child config object:
 
 ```php
 $loggingConfig = $c->child('logging'); /* @var $loggingConfig Config */
 
+// we can now provide only the relevant data to thr logging factory
 $myLoggingFactory = new $loggingFactoryClass;
 $logger = $myLoggingFactory->create($loggingConfig);
 
-// the logging factory..
+// the logging factory "sees" only the data of the "logging" child array
 public function create(Config $cfg)
 {
   $loggers = $cfg->get('loggers'); // $loggers is an array
@@ -121,16 +123,16 @@ public function create(Config $cfg)
 }
 ```
 
-Note:
+To summarize:
 
 * `Config::get` will *always* return the value as it was defined originally. No matter, if the
   value is an array, a class instance, a function or a scalar value.
-* `Config::child` expected the given path to point to an (associative) array. It wraps this
+* `Config::child` expects the given path to point to an (associative) array. It wraps this
   array in a `Config` and returns that object.
 
 It is also possible to modify Config objects after initialization. This may be useful if
 you want to construct a complete configuration object from different parts of your code,
-e.g. allowing different modules to register their configuration or factories.
+e.g. to allow different modules to register their configuration or factories.
 
 ```php
 $c->set('logging/factory', 'AnotherFactoryClass');
