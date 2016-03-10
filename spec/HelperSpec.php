@@ -71,7 +71,7 @@ class HelperSpec extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             $result,
-            $mergedConfig->getConfig()
+            $mergedConfig->getAll()
         );
     }
 } 

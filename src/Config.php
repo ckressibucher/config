@@ -18,6 +18,7 @@ class Config
      */
     public function __construct(array $config = [])
     {
+        // TODO should we complain if $config is an indexed array?
         $this->data = $config;
     }
 

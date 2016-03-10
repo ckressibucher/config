@@ -50,7 +50,7 @@ class Helper
     {
         $configs = func_get_args();
         $arrays = array_map(function (Config $cfg) {
-            return $cfg->getConfig();
+            return $cfg->getAll();
         }, $configs);
         return new Config(call_user_func_array([$this, 'mergeArrays'], $arrays));
     }
