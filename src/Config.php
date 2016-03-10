@@ -197,7 +197,7 @@ class Config
      */
     public function set($path, $value)
     {
-        $pathParts = explode('/', $path);
+        $pathParts = $this->explodePathParts($path);
         $arr = & $this->data;
         while ($key = array_shift($pathParts)) {
             if (!isset($arr[$key]) || count($pathParts) === 0) {
