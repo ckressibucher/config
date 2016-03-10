@@ -4,6 +4,7 @@
 namespace spec\Ckr\Config;
 
 
+use Ckr\Config\DefaultArrayMerger;
 use PhpSpec\ObjectBehavior;
 
 class DefaultArrayMergerSpec extends ObjectBehavior
@@ -38,5 +39,25 @@ class DefaultArrayMergerSpec extends ObjectBehavior
             'c' => $obj
         ];
         $this->mergeRecursively($arr1, $arr2, $arr3)->shouldReturn($expected);
+    }
+
+    public function its_mergeAllRecursively_should_merge_arrays_recursively()
+    {
+        $arr1 = ['a' => 'a', 'b' => ['first', 'second']];
+        $arr2 = ['a' => 1];
+        $arr3 = [];
+        $arr4 = ['c' => null];
+        $expected = [
+            'a' => 1,
+            'b' => ['first', 'second'],
+            'c' => null
+        ];
+        $res = DefaultArrayMerger::mergeAllRecursively($arr1, $arr2, $arr3, $arr4);
+        // use phpunit assertion for static methods
+        try {
+            \PHPUnit_Framework_Assert::assertEquals($expected, $res);
+        } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+            throw new \Exception($e->getComparisonFailure()->getDiff());
+        }
     }
 } 

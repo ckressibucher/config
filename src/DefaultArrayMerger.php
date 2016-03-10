@@ -9,7 +9,7 @@ class DefaultArrayMerger implements ArrayMergerInterface
 {
 
     /**
-     * @param ...array A list of arrays
+     * @param ...array A list of arrays. The later arrays have higher priority
      * @return array
      */
     public function mergeRecursively()
@@ -28,5 +28,16 @@ class DefaultArrayMerger implements ArrayMergerInterface
             }
         }
         return $current;
+    }
+
+    /**
+     * Static wrapper around `mergeRecursively`
+     * @param ...array A list of arrays
+     * @return mixed
+     */
+    public static function mergeAllRecursively()
+    {
+        $merger = new static();
+        return call_user_func_array([$merger, 'mergeRecursively'], func_get_args());
     }
 }
