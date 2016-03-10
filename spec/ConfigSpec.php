@@ -160,13 +160,23 @@ class ConfigSpec extends ObjectBehavior
         $this->get('path')->shouldReturn('old value');
     }
 
+    function its_set_should_respect_escaped_slashes()
+    {
+        $this->beConstructedWith([]);
+        $this->set('some\/key', 'value')->shouldHaveConfigData(['some/key' => 'value']);
+    }
+
     public function getMatchers()
     {
         return array(
             'haveConfigData' => function ($subject, $expectedData) {
                 $cfg = $subject->getAll();
-                return \is_array($expectedData)
-                    && \sort($expectedData) == \sort($cfg);
+                if (! is_array($expectedData)) {
+                    return false;
+                }
+                sort($expectedData);
+                sort($cfg);
+                return $expectedData == $cfg;
             },
             'haveAt' => function($subject, $path, $expectedValue) {
                 /* @var $subject Config */
