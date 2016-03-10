@@ -38,7 +38,15 @@ class Config
     /**
      * Get a value specified by path
      *
-     * TODO allow escaping slash in path parts
+     * The path contains parts separated by '/'. Each part describes one array dimension in
+     * the configuration data. If a array key contains a '/', the given $path can escape
+     * the slash with a preceding backslash:
+     *
+     * `getConfigValue('some\/path')`
+     *
+     * This would return the value 'x' in the array
+     *
+     * `['some/path' => 'x']`
      *
      * @param string     $path Segmented by '/' (to fetch deeper configuration values)
      * @param mixed      $default This value is returned if the given path is not found
