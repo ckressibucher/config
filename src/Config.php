@@ -82,7 +82,7 @@ class Config
             throw new \InvalidArgumentException('given path is empty (after type cast to string)');
         }
         $pathParts = $this->explodePathParts($path);
-        $config = $this->getConfig();
+        $config = $this->getAll();
         while (\count($pathParts) > 1) {
             $key = array_shift($pathParts);
             if (!isset($config[$key])) {
@@ -161,7 +161,7 @@ class Config
     public function child($path, $tolerant = false)
     {
         $notFoundEx = new NotFoundException(sprintf('The path "%s" doesn\'t exist', $path));
-        $cfgValue = $this->getConfigValue($path, $notFoundEx);
+        $cfgValue = $this->get($path, $notFoundEx);
 
         if (is_array($cfgValue)) {
             return new Config($cfgValue);
@@ -208,7 +208,7 @@ class Config
         while ($key = array_shift($pathParts)) {
             if (count($pathParts) === 0) {
                 if ($value instanceof Config) {
-                    $value = $value->getConfig();
+                    $value = $value->getAll();
                 }
                 $arr[$key] = $value;
             } else {
