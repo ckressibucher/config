@@ -37,7 +37,7 @@ class DefaultArrayMerger implements ArrayMergerInterface
      */
     public static function mergeAllRecursively()
     {
-        $merger = new static();
-        return call_user_func_array([$merger, 'mergeRecursively'], func_get_args());
+        $args = func_get_args();
+        return call_user_func_array([new static(), 'mergeRecursively'], $args);
     }
 }
