@@ -166,7 +166,7 @@ class ConfigSpec extends ObjectBehavior
         $this->set('some\/key', 'value')->shouldHaveConfigData(['some/key' => 'value']);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'haveConfigData' => function ($subject, $expectedData) {

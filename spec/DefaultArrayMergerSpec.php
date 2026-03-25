@@ -6,6 +6,8 @@ namespace spec\Ckr\Config;
 
 use Ckr\Config\DefaultArrayMerger;
 use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 
 class DefaultArrayMergerSpec extends ObjectBehavior
 {
@@ -55,8 +57,8 @@ class DefaultArrayMergerSpec extends ObjectBehavior
         $res = DefaultArrayMerger::mergeAllRecursively($arr1, $arr2, $arr3, $arr4);
         // use phpunit assertion for static methods
         try {
-            \PHPUnit_Framework_Assert::assertEquals($expected, $res);
-        } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+            Assert::assertEquals($expected, $res);
+        } catch (ExpectationFailedException $e) {
             throw new \Exception($e->getComparisonFailure()->getDiff());
         }
     }

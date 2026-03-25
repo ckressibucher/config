@@ -2,12 +2,12 @@
     "name": "ckr/config",
     "description": "Simple access to multi dimensional arrays, useful for configuration data",
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=7.1",
         "ckr/arraymerger": "^2.0.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.3",
-        "phpunit/phpunit": "~4.8"
+        "phpspec/phpspec": "~8.2",
+        "phpunit/phpunit": "^8.5"
     },
     "license": "MIT",
     "authors": [

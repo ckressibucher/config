@@ -6,17 +6,15 @@ namespace spec\Ckr\Config;
 
 use Ckr\Config\Config;
 use Ckr\Config\Helper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Mocking objects with variadic methods does not work
  * in prophecy,so we use phpunit for this spec
  */
-class HelperSpec extends \PHPUnit_Framework_TestCase
+class HelperSpec extends TestCase
 {
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
     protected $merger;
 
     /**
@@ -24,7 +22,7 @@ class HelperSpec extends \PHPUnit_Framework_TestCase
      */
     protected $helper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->merger = $this->getMockBuilder('Ckr\Config\ArrayMergerInterface')
             ->disableOriginalConstructor()
