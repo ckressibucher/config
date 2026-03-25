@@ -3,6 +3,14 @@ Configuration Library
 
 [![Build Status](https://travis-ci.org/ckressibucher/config.svg)](https://travis-ci.org/ckressibucher/config)
 
+Update 2026
+----
+
+**CAUTION:** this project is not maintained anymore! **DO NOT USE IN PRODUCTION**.
+
+Description
+----
+
 This package provides a class to manage *hierarchical data*.
 A common use case is configuration data.
 
